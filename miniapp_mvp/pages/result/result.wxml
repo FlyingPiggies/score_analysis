@@ -1,0 +1,18 @@
+<view class="page-container">
+  <view class="card">
+    <view class="title">任务状态</view>
+    <view>任务ID：{{taskId}}</view>
+    <view class="button-gap">当前状态：{{status}}</view>
+    <view class="muted" wx:if="{{errorMessage}}">失败原因：{{errorMessage}}</view>
+  </view>
+
+  <view class="card" wx:if="{{status==='success'}}">
+    <view class="title">结果已生成</view>
+    <button type="primary" bindtap="onDownloadResult" loading="{{downloading}}">下载并打开结果</button>
+  </view>
+
+  <view class="card" wx:if="{{status!=='success' && status!=='failed'}}">
+    <view class="muted">系统正在处理，请稍候...</view>
+    <button class="button-gap" bindtap="onRefreshStatus">手动刷新</button>
+  </view>
+</view>

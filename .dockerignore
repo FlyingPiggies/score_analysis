@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+runtime_tasks/
+output/
+.git/
+.cursor/

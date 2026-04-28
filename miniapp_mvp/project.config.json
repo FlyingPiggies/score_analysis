@@ -1,0 +1,14 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "score-analysis-miniapp",
+  "description": "成绩对比小程序MVP",
+  "appid": "YOUR_APPID",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "compileType": "miniprogram"
+}

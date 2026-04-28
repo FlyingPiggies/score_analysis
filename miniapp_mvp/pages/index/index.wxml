@@ -1,0 +1,22 @@
+<view class="page-container">
+  <view class="card">
+    <view class="title">成绩对比任务</view>
+    <view class="muted">请选择两份成绩单文件（.xls/.xlsx）并提交分析任务。</view>
+  </view>
+
+  <view class="card">
+    <view>第一份成绩单：{{firstFileName || '未选择'}}</view>
+    <button class="button-gap" type="default" bindtap="onPickFirstFile">选择第一份文件</button>
+  </view>
+
+  <view class="card">
+    <view>第二份成绩单：{{secondFileName || '未选择'}}</view>
+    <button class="button-gap" type="default" bindtap="onPickSecondFile">选择第二份文件</button>
+  </view>
+
+  <view class="card">
+    <view>TopK：{{topK}}</view>
+    <slider min="1" max="30" step="1" value="{{topK}}" show-value bindchange="onTopKChange" />
+    <button class="button-gap" type="primary" loading="{{submitting}}" bindtap="onSubmitTask">提交任务</button>
+  </view>
+</view>
