@@ -1,18 +1,23 @@
-const BASE_URL = "https://请替换为你的后端域名";
-
-const API_PREFIX = "/api/v1";
+const {
+  API_BASE_URL,
+  API_PREFIX,
+  HTTP_METHOD,
+  HEADER_KEY,
+  CONTENT_TYPE,
+  ERROR_MESSAGE
+} = require("../config/api");
 
 function buildUrl(path) {
-  return `${BASE_URL}${path}`;
+  return `${API_BASE_URL}${path}`;
 }
 
 function postForm(path, formData = {}) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: buildUrl(path),
-      method: "POST",
+      method: HTTP_METHOD.POST,
       header: {
-        "content-type": "application/x-www-form-urlencoded"
+        [HEADER_KEY.CONTENT_TYPE]: CONTENT_TYPE.FORM
       },
       data: formData,
       success: (res) => {
@@ -20,9 +25,9 @@ function postForm(path, formData = {}) {
           resolve(res.data);
           return;
         }
-        reject(new Error(res.data.detail || "请求失败"));
+        reject(new Error(res.data.detail || ERROR_MESSAGE.REQUEST_FAILED));
       },
-      fail: () => reject(new Error("网络请求失败"))
+      fail: () => reject(new Error(ERROR_MESSAGE.NETWORK_FAILED))
     });
   });
 }
@@ -45,12 +50,12 @@ function uploadTaskFile(taskId, fileRole, filePath) {
             resolve(payload);
             return;
           }
-          reject(new Error(payload.detail || "上传文件失败"));
+          reject(new Error(payload.detail || ERROR_MESSAGE.UPLOAD_FILE_FAILED));
         } catch (error) {
-          reject(new Error("上传返回格式异常"));
+          reject(new Error(ERROR_MESSAGE.UPLOAD_RESPONSE_INVALID));
         }
       },
-      fail: () => reject(new Error("网络请求失败"))
+      fail: () => reject(new Error(ERROR_MESSAGE.NETWORK_FAILED))
     });
   });
 }
@@ -70,15 +75,15 @@ function getTaskStatus(taskId) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: buildUrl(`${API_PREFIX}/tasks/${taskId}`),
-      method: "GET",
+      method: HTTP_METHOD.GET,
       success: (res) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve(res.data);
           return;
         }
-        reject(new Error(res.data.detail || "查询任务失败"));
+        reject(new Error(res.data.detail || ERROR_MESSAGE.QUERY_TASK_FAILED));
       },
-      fail: () => reject(new Error("网络请求失败"))
+      fail: () => reject(new Error(ERROR_MESSAGE.NETWORK_FAILED))
     });
   });
 }
@@ -92,15 +97,15 @@ function downloadResult(taskId) {
           resolve(res.tempFilePath);
           return;
         }
-        reject(new Error("下载结果失败"));
+        reject(new Error(ERROR_MESSAGE.DOWNLOAD_RESULT_FAILED));
       },
-      fail: () => reject(new Error("网络请求失败"))
+      fail: () => reject(new Error(ERROR_MESSAGE.NETWORK_FAILED))
     });
   });
 }
 
 module.exports = {
-  BASE_URL,
+  API_BASE_URL,
   createTask,
   getTaskStatus,
   downloadResult

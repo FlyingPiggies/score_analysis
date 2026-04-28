@@ -8,10 +8,10 @@
 
 ## 2. 修改后端地址
 
-编辑 `utils/api.js`：
+编辑 `config/api.js`：
 
 ```js
-const BASE_URL = "https://你的后端域名";
+const API_BASE_URL = "https://www.lulusmagicbox.cloud";
 ```
 
 ## 3. 页面流程
