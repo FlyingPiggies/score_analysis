@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 import pandas as pd
 
 from .constants import (
@@ -7,6 +9,7 @@ from .constants import (
     METRIC_CLASS_RANK,
     METRIC_SCORE,
     METRIC_YEAR_RANK,
+    STUDENT_ID_DIGITS_PATTERN,
     SUBJECT_ALIASES,
     SUBJECT_TOTAL_SCORE,
     TOTAL_SUBJECT_ALIASES,
@@ -38,7 +41,7 @@ def normalize_student_id(value: object) -> str:
     try:
         numeric_value = float(text)
     except ValueError:
-        return text
+        return text if re.fullmatch(STUDENT_ID_DIGITS_PATTERN, text) else ""
     if numeric_value.is_integer():
         return str(int(numeric_value))
     return text

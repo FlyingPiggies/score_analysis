@@ -3,3 +3,6 @@
 
 __pycache__/
 *.pyc
+
+# Local/private WeChat miniapp config (contains appid and user paths)
+miniapp_mvp/project.private.config.json

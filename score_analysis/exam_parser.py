@@ -179,10 +179,14 @@ def parse_exam(file_path: Path) -> ParsedExamData:
     coerce_numeric_columns(data_df, subject_columns)
     subjects = extract_subjects(data_df.columns)
 
-    total_rank_column = f"{SUBJECT_TOTAL_SCORE}_{METRIC_YEAR_RANK}"
-    ensure_required_columns(data_df, [total_rank_column], file_path)
     data_df = data_df[data_df[COLUMN_NAME] != ""].copy()
-    data_df = data_df[data_df[total_rank_column].notna()].copy()
+    rank_columns = [f"{subject}_{METRIC_YEAR_RANK}" for subject in subjects if f"{subject}_{METRIC_YEAR_RANK}" in data_df.columns]
+    if not rank_columns:
+        raise ValueError(
+            f"文件 {file_path.name} 未找到任何“年级排名/年级名次”列，"
+            f"请确认表头包含如“语文-年级名次”或“总分-年级排名”等字段。"
+        )
+    data_df = data_df[data_df[rank_columns].notna().any(axis=1)].copy()
     data_df[COLUMN_MATCH_KEY] = data_df.apply(
         lambda row: build_match_key(row[COLUMN_NAME], row[COLUMN_STUDENT_ID]),
         axis=1,
